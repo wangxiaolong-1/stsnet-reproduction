@@ -1,0 +1,41 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# 虚拟环境
+.venv/
+venv/
+env/
+ENV/
+
+# ===== 训练产物 =====
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+runs/
+logs/
+*.log
+
+# ===== 本地项目数据与文档管线产物 =====
+.workbuddy/
+output/
+
+# ===== 论文原文与官方仓库（版权/冗余，不随代码仓库分发）=====
+paper/
+official_STSNet/
+
+# ===== IDE / 系统 =====
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
