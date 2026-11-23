@@ -7,11 +7,10 @@ npy) for qualitative inspection.
 
 Usage:
     # quick synthetic sanity check
-    .\\.venv\\Scripts\\python.exe eval.py --data synthetic
+    python eval.py --data synthetic
 
-    # real test set (after data_prep.py produced manifest.json)
-    .\\.venv\\Scripts\\python.exe eval.py --data /path/to/whu_h2sr_mt --split test \\
-        --checkpoint checkpoints/stsnet_best.pt --save-dir outputs
+    # real test set (after preparing data and training)
+    python eval.py --data data/whu --split test --checkpoint checkpoints/stsnet_best.pt --save-dir outputs
 """
 import argparse
 import os

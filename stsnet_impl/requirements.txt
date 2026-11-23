@@ -1,6 +1,4 @@
-# STSNet 复现依赖（CPU 版 torch，与本机环境一致）
-# GPU 服务器请改用:
-#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# STSNet 复现依赖
 torch==2.14.0
 torchvision==0.29.0
 numpy>=1.24

@@ -5,7 +5,7 @@ Paper settings: Adam, lr 0.001, cross-entropy loss, batch 8,
 
 Usage:
     python train.py --data synthetic --epochs 3 --batch-size 2
-    python train.py --data /path/to/whu_h2sr_mt --epochs 45 --batch-size 8
+    python train.py --data data/whu --epochs 45 --batch-size 8
 """
 import argparse
 import os

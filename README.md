@@ -35,8 +35,6 @@ Sentinel-2 影像（31 期 × 10 波段），通过跨分辨率融合实现时�
     └── test_smoke.py      冒烟测试
 ```
 
-训练时会生成 `stsnet_impl/checkpoints/`。依赖安装见 [实现说明](stsnet_impl/README.md)。
-
 ## 实验配置
 
 | 项 | 值 |
@@ -52,29 +50,17 @@ Sentinel-2 影像（31 期 × 10 波段），通过跨分辨率融合实现时�
 ## 数据集
 
 WHU-H2SR-MT：沈阳实验区，2531 对样本，8 类地物，6:1:3 划分。托管于 Zenodo
-（记录号 10578673，66 个 RAR 分卷、压缩后约 83.5 GB、11 个子区域，解压后更大）。数据准备见 `data_prep.py`。
+（记录号 10578673，66 个 RAR 分卷、压缩后约 83.5 GB、11 个子区域，解压后更大）。数据准备见 [data_prep.py](stsnet_impl/data_prep.py)。
 
 ## 快速开始
 
 ```bash
 cd stsnet_impl
-
-# 冒烟测试
-.\.venv\Scripts\python.exe test_smoke.py
-
-# 合成数据训练（管线验证）
-.\.venv\Scripts\python.exe train.py --data synthetic --epochs 8 --batch-size 4
-
-# 全量评估
-.\.venv\Scripts\python.exe eval.py --data synthetic --checkpoint checkpoints/stsnet_best.pt
-
-# 真实数据（需先下载约 83.5 GB，Zenodo 需能连通）
-.\.venv\Scripts\python.exe data_prep.py download --out data/raw
-.\.venv\Scripts\python.exe data_prep.py extract  --root data/raw
-.\.venv\Scripts\python.exe data_prep.py probe    --root data/raw/extracted/1
-.\.venv\Scripts\python.exe data_prep.py tile     --root data/raw --out data/whu
-.\.venv\Scripts\python.exe train.py --data data/whu --epochs 45 --batch-size 8
+python -m pip install -r requirements.txt
+python test_smoke.py
 ```
+
+训练、评估和数据准备步骤见 [实现说明](stsnet_impl/README.md)。
 
 ## 进展
 
@@ -82,7 +68,7 @@ cd stsnet_impl
 - [x] 合成数据训练验证（8 epoch：loss 2.07 → 1.08，mIoU 2% → 36%）
 - [x] 论文尺度前向验证（参数量 27.77 M，与论文 28.71 M 一致）
 - [x] 训练 / 评估 / 数据准备脚本齐备
-- [x] 逐模块公式核对（Eq.1–18 全部一致，见 VERIFICATION.md）
+- [x] 逐模块公式核对（Eq.1–18 全部一致，见 [核对报告](stsnet_impl/VERIFICATION.md)）
 - [ ] WHU-H2SR-MT 真实数据训练，复现论文表 9/10
 - [ ] 迁移至 GPU 服务器完成 45 epoch 完整训练
 

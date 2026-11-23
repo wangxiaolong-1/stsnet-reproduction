@@ -4,7 +4,7 @@
 network for high resolution land-cover segmentation* (Information Fusion 114,
 2025, 102689)
 
-官方仓库（仅含 2 个文件，时空编码器与训练代码缺失）：`../official_STSNet`
+官方参考实现见 [RS-Mage/STSNet](https://github.com/RS-Mage/STSNet)。
 本实现：完整四大模块 + 训练管线，纯 PyTorch，无其他依赖。
 
 ## 文件与论文对应关系
@@ -24,35 +24,31 @@ network for high resolution land-cover segmentation* (Information Fusion 114,
 
 ## 使用
 
-> 依赖已装到项目自带虚拟环境 `.venv`（torch 2.14.0+cpu 等）。
-> 直接用 `.venv\Scripts\python.exe` 运行即可，无需系统安装 torch。
+在 `stsnet_impl/` 目录下，用当前 Python 环境安装 [requirements.txt](requirements.txt) 中的依赖。
 
 ```bash
-# （可选）激活虚拟环境后，即可直接 `python ...`
-.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 
 # 冒烟测试（形状 + 反向传播 + α 敏感性）
-.\.venv\Scripts\python.exe test_smoke.py
+python test_smoke.py
 
 # 合成数据训练（验证管线，CPU 可跑）
-.\.venv\Scripts\python.exe train.py --data synthetic --epochs 8 --batch-size 4
+python train.py --data synthetic --epochs 8 --batch-size 4
 
-# 全量评估（逐类 IoU/F1、OA/mIoU、混淆矩阵 + 预测图）
-.\.venv\Scripts\python.exe eval.py --data synthetic --batch-size 4 \
-    --checkpoint checkpoints/stsnet_best.pt --save-dir outputs
-
-# 真实数据：先准备数据（下载→解压→探查格式→切块→manifest）
-.\.venv\Scripts\python.exe data_prep.py download --out data/raw
-.\.venv\Scripts\python.exe data_prep.py extract  --root data/raw
-.\.venv\Scripts\python.exe data_prep.py probe    --root data/raw/extracted/1
-.\.venv\Scripts\python.exe data_prep.py tile     --root data/raw --out data/whu
-.\.venv\Scripts\python.exe train.py --data data/whu --epochs 45 --batch-size 8
-.\.venv\Scripts\python.exe eval.py  --data data/whu --split test \
-    --checkpoint checkpoints/stsnet_best.pt --save-dir outputs
+# 评估上一步训练生成的模型
+python eval.py --data synthetic --batch-size 4 --checkpoint checkpoints/stsnet_best.pt --save-dir outputs
 ```
 
-> 若因 PowerShell 执行策略无法激活，用 `.\.venv\Scripts\python.exe 脚本名` 直接运行即可。
-> 依赖清单见 `requirements.txt`。
+真实数据从 Zenodo 下载。下列命令依次生成原始数据、切块和训练产物。
+
+```bash
+python data_prep.py download --out data/raw
+python data_prep.py extract --root data/raw
+python data_prep.py probe --root data/raw/extracted
+python data_prep.py tile --root data/raw --out data/whu
+python train.py --data data/whu --epochs 45 --batch-size 8
+python eval.py --data data/whu --split test --checkpoint checkpoints/stsnet_best.pt --save-dir outputs
+```
 
 论文尺度配置（默认参数即可）：H2SR `(B,249,300,300)` + MT `(B,31,10,30,30)`
 → logits `(B,8,300,300)`，参数量 27.77M（论文报告 28.71M）。
@@ -78,7 +74,7 @@ RAR 文件、约 145 GB**，覆盖沈阳实验区 **11 个子区域**，每区�
 
 切块后目录即 `data/whu`：`h2sr/*.npy` `(249,300,300)`、`mt/*.npy`
 `(31,10,30,30)`、`label/*.npy` `(300,300)`，加 `manifest.json` 记录 6:1:3 划分，
-`datasets.py` 据此加载。
+[`stsnet/datasets.py`](stsnet/datasets.py) 据此加载。
 
 ## 与论文/官方代码的已知偏差
 
@@ -89,9 +85,3 @@ RAR 文件、约 145 GB**，覆盖沈阳实验区 **11 个子区域**，每区�
    ConvLSTM/3D 注意力并联）；
 4. 窗口注意力采用 padding-分区-去 padding 的简化实现（未做 Swin 的注意力掩码），
    在特征尺寸非窗口整数倍时行为等价性略有差异。
-
-## 环境隔离
-
-本机为 CPU 验证环境，依赖装在项目虚拟环境 `.venv`（torch 2.14.0+cpu）。
-到服务器上换 CUDA 版 torch 即可训练：
-`pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121`

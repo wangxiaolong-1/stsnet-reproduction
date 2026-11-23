@@ -1,8 +1,8 @@
 # STSNet 复现逐模块核对报告
 
 > 目的：将 `stsnet_impl/stsnet/` 的每一处实现逐条对照论文《STSNet》（Information
-> Fusion 114 (2025) 102689）Sec.2.1–2.3 的 Eq.1–18 与官方参考代码
-> `official_STSNet/src/`，验证复现是否与原文一致，并如实记录所有偏差。
+> Fusion 114 (2025) 102689）Sec.2.1–2.3 的 Eq.1–18 与官方参考代码，验证复现是否
+> 与原文一致，并如实记录所有偏差。[官方参考实现](https://github.com/RS-Mage/STSNet)
 
 核对日期：2026-09-04。核对范围：`spatial_spectral_encoder.py`、
 `spatio_temporal_encoder.py`、`cross_resolution_fusion.py`、`decoder.py`、

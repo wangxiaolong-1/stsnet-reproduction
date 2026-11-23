@@ -18,11 +18,11 @@ split 6:1:3. H2SR is 1 m (300 px), Sentinel-2 is 10 m (30 px), 31 dates,
 10 bands, 249 spectral bands, 8 classes.
 
 Example:
-    .\\.venv\\Scripts\\python.exe data_prep.py probe  --root data/raw/region_1
-    .\\.venv\\Scripts\\python.exe data_prep.py download --out data/raw
-    .\\.venv\\Scripts\\python.exe data_prep.py extract --root data/raw
-    .\\.venv\\Scripts\\python.exe data_prep.py tile --root data/raw --out data/whu
-    .\\.venv\\Scripts\\python.exe data_prep.py manifest --root data/whu
+    python data_prep.py download --out data/raw
+    python data_prep.py extract --root data/raw
+    python data_prep.py probe --root data/raw/extracted
+    python data_prep.py tile --root data/raw --out data/whu
+    python data_prep.py manifest --root data/whu
 """
 import argparse
 import hashlib
