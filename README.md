@@ -21,30 +21,21 @@ Sentinel-2 影像（31 期 × 10 波段），通过跨分辨率融合实现时�
 
 ## 目录结构
 
+```text
+.
+├── README.md
+└── stsnet_impl/
+    ├── README.md          安装依赖与使用说明
+    ├── VERIFICATION.md    代码与论文公式核对报告
+    ├── requirements.txt   Python 依赖
+    ├── stsnet/            模型、数据集和评估指标
+    ├── train.py           训练
+    ├── eval.py            评估
+    ├── data_prep.py       数据准备
+    └── test_smoke.py      冒烟测试
 ```
-D:\CNU\paper\
-├── README.md             本文档
-├── paper\                阅读材料
-│   ├── STSNet_InformationFusion_2025.pdf   论文原文
-│   └── STSNet_fulltext_extracted.txt       论文全文文本（查公式/细节）
-├── official_STSNet\      官方参考实现（github.com/RS-Mage/STSNet）
-└── stsnet_impl\          完整实现（主要工作目录）
-    ├── stsnet\           网络模块包
-    │   ├── spatial_spectral_encoder.py   多尺度空间-光谱编码器
-    │   ├── spatio_temporal_encoder.py    时空编码器
-    │   ├── cross_resolution_fusion.py    跨分辨率融合模块
-    │   ├── decoder.py                    多尺度解码器
-    │   ├── model.py                      STSNet 整网组装
-    │   ├── convlstm.py                   ConvLSTM
-    │   ├── metrics.py                    IoU / F1 / OA / mIoU（Eq.13-18）
-    │   └── datasets.py                   合成数据 + WHU-H2SR-MT 加载器
-    ├── train.py            训练脚本（Adam lr=0.001, CE, batch 8）
-    ├── eval.py             评估脚本（逐类 IoU/F1、OA/mIoU、混淆矩阵 + 预测图）
-    ├── data_prep.py        数据准备（下载/解压/探查/切块 → manifest.json）
-    ├── test_smoke.py       冒烟测试（形状/反向传播/α 敏感性）
-    ├── VERIFICATION.md     逐模块核对报告（代码 ↔ 论文 Eq.1–18 逐条对照）
-    └── checkpoints\        训练产物
-```
+
+训练时会生成 `stsnet_impl/checkpoints/`。依赖安装见 [实现说明](stsnet_impl/README.md)。
 
 ## 实验配置
 
